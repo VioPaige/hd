@@ -341,7 +341,7 @@ module.exports = () => {
 
 
 
-    client.login("ODU0MDE1NjU3MzUwNTI5MDY0.YMdyDw.IUYY26qagobjCLDxkC75myfsphE")
+    client.login("token")
 
 
 }
