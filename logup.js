@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded',  function() {
+document.addEventListener('DOMContentLoaded',  function() { // wait till page loaded
 
     let notInUsernameArray = ["-", ",", ";", ":", "[", "]", "(", ")", "{", "}", "!", "@", "#", "$", "%", "^", "&", "*", "§", "±", "~", "`", "=", "/", `"`, `'`, "+"]
 
-
+    // define html elements
     let form = document.getElementById('email-form')
     let usernameInput = document.getElementById('name')
     let emailInput = document.getElementById('email')
@@ -14,18 +14,16 @@ document.addEventListener('DOMContentLoaded',  function() {
 
     let disabled = ""
 
-
+    // prevent form submit if disabled button
     form.addEventListener('submit', function(e) {
         if (disabled.includes("email") || disabled.includes("username")) {
             e.preventDefault()
         }
     })
 
-
-    usernameInput.oninput = function() {
-        // console.log("oauwehoiajwrg")
-        // console.log(usernameInput.value)
-        let lc = usernameInput.value.toLowerCase()
+ 
+    usernameInput.oninput = function() { // check for new input
+        let lc = usernameInput.value.toLowerCase() // check for bad words in username and disable if true
         let forbidden = false
         let badwordforbidden = false
         let activebadword = ""
@@ -40,7 +38,7 @@ document.addEventListener('DOMContentLoaded',  function() {
         let whitelist = "abcdefghijklmnopqrstuvwxyz1234567890_"
         let split = lc.split('')
         for (let i of split) {
-            if (!whitelist.includes(i.toLowerCase())) {
+            if (!whitelist.includes(i.toLowerCase())) { // if username contains non whitelisted char's, disable
                 // console.log("forbidden because includes non-whitelisted")
                 forbidden = true
             }
@@ -53,7 +51,7 @@ document.addEventListener('DOMContentLoaded',  function() {
             "0": "o"
         }
 
-        for (let i of blacklist) {
+        for (let i of blacklist) { // check for bad words
             if (lc.includes(i)) {
                 badwordforbidden = true
                 forbidden = true
@@ -61,7 +59,7 @@ document.addEventListener('DOMContentLoaded',  function() {
             }
         }
 
-        for (let [i, v] of Object.entries(identicals)) {
+        for (let [i, v] of Object.entries(identicals)) { // check for bypassing bad words with numbers
             let replaced = lc.replaceAll(i, v)
 
             for (let i of blacklist) {
@@ -72,21 +70,9 @@ document.addEventListener('DOMContentLoaded',  function() {
                 }
             }
         }
-        // if (badwordforbidden) {
-        //     console.log("badword")
-        //     usernameInput.setAttribute("class", "logup-fields-red w-input")
-        //     canOnlyInclude.setAttribute("class", "about-paragraphs-red")
-        //     signupbutton.setAttribute("class", "sign-up-button-disabled w-button")
-        //     signupbutton.setAttribute("disabled", true)
-        // } else {
-        //     usernameInput.setAttribute("class", "logup-fields w-input")
-        //     canOnlyInclude.setAttribute("class", "about-paragraphs-cantcontain")
-        //     signupbutton.setAttribute("class", "sign-up-button w-button")
-        //     signupbutton.removeAttribute("disabled")
-        // }
 
 
-        if (forbidden) {
+        if (forbidden) { // disable and change colors
             disabled = `${disabled}username`
             usernameInput.setAttribute("class", "logup-fields-red w-input")
             canOnlyInclude.setAttribute("class", "about-paragraphs-red")
@@ -103,35 +89,5 @@ document.addEventListener('DOMContentLoaded',  function() {
             }
         }
     }
-
-
-
-    email.oninput = function() {
-        let validemail = true
-        if (!email.value.includes("@")) {
-            validemail = false
-        }
-        if (!email.value.includes(".")) {
-            validemail = false
-        }
-        if (!validemail) {
-            disabled = `${disabled}email`
-            emailInput.setAttribute("class", "logup-fields-red w-input")
-            invalidemail.setAttribute("class", "about-paragraphs-red")
-            signupbutton.setAttribute("class", "sign-up-button-disabled w-button")
-            signupbutton.setAttribute("disabled", "")
-        } else {
-            disabled = disabled.replaceAll("email", "")
-            emailInput.setAttribute("class", "logup-fields w-input")
-            invalidemail.setAttribute("class", "about-paragraphs-cantcontain")
-            signupbutton.setAttribute("disabled", "")
-            if (!disabled.includes("email") && !disabled.includes("username")) {
-                signupbutton.setAttribute("class", "sign-up-button w-button")
-                signupbutton.removeAttribute("disabled")
-            }
-        }
-    }
-
-
 
 })
